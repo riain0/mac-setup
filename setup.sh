@@ -140,11 +140,18 @@ teardown() {
 
 [[ -f "$BREWFILE" ]] || fail "Brewfile not found at $BREWFILE — keep it next to this script."
 
-# Keep sudo alive for the duration
-sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" 2>/dev/null || exit; done &
-SUDO_PID=$!
-trap "kill $SUDO_PID 2>/dev/null" EXIT
+# Only prompt for sudo if operations that need it haven't run yet
+_needs_sudo=false
+! command -v aws &>/dev/null && _needs_sudo=true
+! grep -qF "/opt/homebrew/bin/zsh" /etc/shells 2>/dev/null && _needs_sudo=true
+
+if $_needs_sudo; then
+  log "Some steps require sudo — enter password once:"
+  sudo -v
+  while true; do sudo -n true; sleep 60; kill -0 "$$" 2>/dev/null || exit; done &
+  SUDO_PID=$!
+  trap "kill $SUDO_PID 2>/dev/null" EXIT
+fi
 
 # =============================================================================
 section "Xcode Command Line Tools"
