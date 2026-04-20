@@ -38,12 +38,11 @@ Edit `Brewfile` to add or remove packages before running setup. Comment out any 
 ## After setup
 
 ```bash
-gcloud init                          # authenticate GCP
-aws configure                        # set AWS credentials
-gh auth login                        # authenticate GitHub CLI
-gt auth                              # authenticate Graphite CLI
-colima start                         # start Docker daemon
-claude  # then /bureau:install caveman  # install Claude Code skills
+gcloud init       # authenticate GCP
+aws configure     # set AWS credentials
+gh auth login     # authenticate GitHub CLI
+gt auth           # authenticate Graphite CLI
+colima start      # start Docker daemon
 ```
 
 ## Claude Code config
@@ -57,11 +56,23 @@ claude  # then /bureau:install caveman  # install Claude Code skills
 
 Re-running `setup.sh` updates `~/.claude/CLAUDE.md` if the file has changed (backs up the existing one first).
 
-### Required tools for CLAUDE.md features
+### Installing Claude Code skills
+
+**Bureau** (agent package manager):
+
+```
+claude plugin marketplace add riain0/bureau
+claude plugin install bureau
+```
+
+**Caveman** (terse communication mode):
+
+```
+claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman
+```
 
 | Feature | Tool | Installed by |
 |---------|------|-------------|
-| Caveman mode | Claude Code skill | `claude` → `/bureau:install caveman` |
-| Commits | Claude Code skill | `claude` → `/bureau:install caveman` |
+| Caveman mode | Claude Code plugin | above |
 | Graphite workflow | `gt` CLI | Brewfile |
-| Bureau | Claude Code skill | `claude` → `/bureau:install bureau` |
+| Bureau | Claude Code plugin | above |
