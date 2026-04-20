@@ -4,8 +4,12 @@
 #  Idempotent: safe to run multiple times on any macOS machine
 #
 #  Usage:
-#    ./setup.sh           → install everything
-#    ./setup.sh teardown  → remove everything installed by this script
+#    ./setup.sh                  → install everything (local clone)
+#    ./setup.sh teardown         → remove everything installed by this script
+#
+#    Without cloning:
+#    bash <(curl -fsSL https://raw.githubusercontent.com/riain0/mac-setup/main/setup.sh)
+#    bash <(curl -fsSL https://raw.githubusercontent.com/riain0/mac-setup/main/setup.sh) teardown
 #
 #  The Brewfile controls exactly what gets installed — comment out any line
 #  there to skip a package without touching this script.
@@ -27,9 +31,22 @@ MODE="${1:-install}"
 
 [[ "$(uname)" == "Darwin" ]] || fail "macOS only."
 
-# Brewfile must live next to this script
+# If running via curl (no local files), download repo files to a temp dir
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BREWFILE="$SCRIPT_DIR/Brewfile"
+CLAUDE_SRC="$SCRIPT_DIR/CLAUDE.md"
+_TMPDIR=""
+
+if [[ ! -f "$BREWFILE" ]]; then
+  _TMPDIR="$(mktemp -d)"
+  BREWFILE="$_TMPDIR/Brewfile"
+  CLAUDE_SRC="$_TMPDIR/CLAUDE.md"
+  REPO_RAW="https://raw.githubusercontent.com/riain0/mac-setup/main"
+  log "Running without local clone — downloading repo files..."
+  curl -fsSL "$REPO_RAW/Brewfile"   -o "$BREWFILE"    || fail "Failed to download Brewfile"
+  curl -fsSL "$REPO_RAW/CLAUDE.md"  -o "$CLAUDE_SRC"  || fail "Failed to download CLAUDE.md"
+  trap '[[ -n "$_TMPDIR" ]] && rm -rf "$_TMPDIR"' EXIT
+fi
 
 # =============================================================================
 # TEARDOWN
@@ -241,7 +258,6 @@ section "Claude Code Config"
 CLAUDE_DIR="$HOME/.claude"
 mkdir -p "$CLAUDE_DIR"
 CLAUDE_CFG="$CLAUDE_DIR/CLAUDE.md"
-CLAUDE_SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/CLAUDE.md"
 
 if [[ ! -f "$CLAUDE_SRC" ]]; then
   warn "CLAUDE.md not found next to setup.sh - skipping"

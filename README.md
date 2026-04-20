@@ -5,8 +5,13 @@ Idempotent bootstrap for a platform engineer's Mac. Safe to re-run — skips any
 ## Usage
 
 ```bash
-./setup.sh           # install everything
-./setup.sh teardown  # remove everything installed by this script
+# Without cloning
+bash <(curl -fsSL https://raw.githubusercontent.com/riain0/mac-setup/main/setup.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/riain0/mac-setup/main/setup.sh) teardown
+
+# From a local clone
+./setup.sh
+./setup.sh teardown
 ```
 
 ## What gets installed
