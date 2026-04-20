@@ -402,7 +402,6 @@ plugins=(
 )
 
 source "$ZSH/oh-my-zsh.sh"
-setopt aliases  # p10k/gitstatus sets no_aliases internally and can leak it
 
 # zoxide (smarter cd)
 eval "$(zoxide init zsh)" 2>/dev/null || true
@@ -479,6 +478,7 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 # Powerlevel10k config
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
+setopt aliases  # p10k/gitstatus sets no_aliases internally and can leak it
 # -- end mac-setup ------------------------------------------------------------
 ZSHRC_BLOCK
 
