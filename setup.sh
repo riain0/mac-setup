@@ -407,6 +407,7 @@ source "$ZSH/oh-my-zsh.sh"
 eval "$(zoxide init zsh)" 2>/dev/null || true
 
 # direnv
+export DIRENV_LOG_FORMAT=""
 eval "$(direnv hook zsh)" 2>/dev/null || true
 
 # fzf
