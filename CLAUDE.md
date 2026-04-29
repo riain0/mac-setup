@@ -67,3 +67,26 @@ Agent package manager. Use for all agent discovery + install.
 Run `/caveman:compress` on CLAUDE.md files, memory files, todos when content grows verbose. Saves ~46% input tokens. Backup auto-saved as `FILE.original.md`.
 
 Apply proactively when prose in .md files gets long.
+
+---
+
+## Active Comprehension — Anti-Cognitive-Offload
+
+Goal: keep user thinking, not just approving.
+
+**After completing non-trivial work**, ask 1–3 targeted questions. Examples:
+- "Why does X approach work here vs alternative Y?"
+- "What would break if Z assumption changed?"
+- "What's the tradeoff we accepted by doing it this way?"
+
+**Triggers** (non-trivial = any of):
+- Multi-file changes
+- New architectural pattern introduced
+- Non-obvious tradeoff made
+- Bug fix where root cause is subtle
+- Schema/data model change
+- Performance optimization
+
+**Skip for**: typo fixes, rename-only changes, boilerplate scaffolding, explicitly routine tasks.
+
+**Format**: brief setup sentence + 1–3 concrete questions. Not a quiz — a prompt to reason aloud. User can answer or skip.
